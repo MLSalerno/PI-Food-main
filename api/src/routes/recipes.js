@@ -18,35 +18,58 @@ const { API_KEY } = process.env;
 // glutenFree) estos son booleanos, forman parte del tipo de dietas
 // diets es un array donde hay mas tipos de dieta
 
+//cosas a optimizar y completar:
+//crear funcion get para api y para db
+//relacionar receta con dieta
+//buscar sin case sensitive
 
-const getAll = async (name) => {
-    let callDb;
-    let callApi;
+const getApi = async (name) => {
+    let api;
     if (name) {
-        callApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${name}&addRecipeInformation=true`);
-        callDb = await Recipe.findAll({
+        api = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${name}&addRecipeInformation=true`);
+    }
+    else {
+        api = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=90`)
+    }
+    return api
+}
+
+const getDB = async (name) => {
+    let db;
+    if (name) {
+        db = await Recipe.findAll({
             where: { name: name },
             include: Diet
         })
     }
     else {
-        callApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=90`);
-        callDb = await Recipe.findAll({
+        db = await Recipe.findAll({
             include: Diet
         })
     }
-    // console.log(callApi.data.results)
-    let filteredCallApi = callApi.data.results.map(e => {
+    return db;
+}
 
+const getAll = async (name) => {
+    let callApi = await getApi(name);
+    let callDb = await getDB(name)
+
+    let filteredCallApi = callApi.data.results.map(e => {
         let stepsBySteps = [];
+        let allDiets = [];
         e.analyzedInstructions.forEach(e => {
-            // console.log(e)
             e.steps.forEach(a => {
                 stepsBySteps.push(a.step)
             })
         });;
-
-        console.log(stepsBySteps)
+        e.vegetarian ? allDiets.push("VEGETARIAN"):null;
+        e.vegan ? allDiets.push("VEGAN"):null
+        e.glutenFree ? allDiets.push("GLUTEN FREE"):null
+        e.diets.forEach(a => {
+            allDiets.push(a.toUpperCase())
+        });
+        allDiets = [...new Set(allDiets)]
+        
         return {
             id: e.id,
             name: e.title,
@@ -54,19 +77,22 @@ const getAll = async (name) => {
             summary: e.summary,
             healthScore: e.healthScore,
             dishTypes: e.dishTypes,
-            steps: stepsBySteps
+            steps: stepsBySteps,
+            diets:allDiets
         }
     })
-
+    
     let filteredCallDb = callDb.map(e => {
-        // console.log(temperaments)
+
+        let diets = e.dataValues.diets.map(e => e.dataValues.name);
         return {
             id: e.dataValues.id,
             name: e.dataValues.name,
             summary: e.summary,
             healthScore: e.healthScore,
             steps: e.dataValues.steps,
-            image:e.dataValues.image
+            diet: diets,
+            image: e.dataValues.image
         }
     })
     return cleanDataApiDb = [...filteredCallApi, ...filteredCallDb];
@@ -74,27 +100,52 @@ const getAll = async (name) => {
 
 const getByID = async (id) => {
     let recipe;
-    // if (id.length < 10) {
-        findAPI = await getAll();
+    if (id.length < 15) {
+        // console.log(findAll)
         id = Number(id);
-        let findRecipe = findAPI.find(e => e.id === id);
-        recipe = findRecipe
-    // }
-    // else {
-    //     let findRecipeDB = await Recipe.findOne({
-    //         where: { id: id },
-    //         include: Diet
-    //     });
+        let findRecipe = await axios(`https://api.spoonacular.com/recipes/${id}/information?apiKey=0dfd565b4d54481f892a998889076ce4`)
+        let stepsBySteps = [];
+        let allDiets = [];
+        findRecipe.data.analyzedInstructions.forEach(e => {
+            e.steps.forEach(a => {
+                stepsBySteps.push(a.step)
+            })
+        })
+        findRecipe.data.vegetarian ? allDiets.push("VEGETARIAN"):null;
+        findRecipe.data.vegan ? allDiets.push("VEGAN"):null
+        findRecipe.data.glutenFree ? allDiets.push("GLUTEN FREE"):null
+        findRecipe.data.diets.forEach(a => {
+            allDiets.push(a.toUpperCase())
+        });
+        allDiets = [...new Set(allDiets)]
 
-    //     recipe = {
-    //         id: findRecipeDB.dataValues.id,
-    //         name: findRecipeDB.dataValues.name,
-    //         summary: findRecipeDB.dataValues.summary,
-    //         healthScore: findRecipeDB.dataValues.healthScore,
-    //         steps: findRecipeDB.dataValues.steps,
-    //         image:findRecipeDB.dataValues.image
-    //     }
-    // }
+        recipe = {
+            id: findRecipe.data.id,
+            name: findRecipe.data.title,
+            image: findRecipe.data.image,
+            summary: findRecipe.data.summary,
+            healthScore: findRecipe.data.healthScore,
+            dishTypes: findRecipe.data.dishTypes,
+            steps: stepsBySteps,
+            diets:allDiets
+        }
+    }
+    else {
+        let findRecipe = await Recipe.findOne({
+            where: { id: id },
+            include: Diet
+        });
+        let diets = findRecipe.dataValues.diets.map(e => e.dataValues.name);
+        return {
+            id: findRecipe.dataValues.id,
+            name: findRecipe.dataValues.name,
+            summary: findRecipe.summary,
+            healthScore: findRecipe.healthScore,
+            steps: findRecipe.dataValues.steps,
+            diet: diets,
+            image: findRecipe.dataValues.image
+        }
+    }
     return recipe;
 }
 
@@ -121,8 +172,9 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     let recipe;
     let id = req.params.id;
+
     try {
-        recipe = getByID(id)
+        recipe = await getByID(id)
         if (recipe) {
             res.send(recipe)
         }
@@ -136,31 +188,34 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
     try {
-        let {name, summary, healthScore, steps, image} = req.body;
+        let { name, summary, healthScore, steps, image, diet } = req.body;
 
         const newRecipe = await Recipe.create({
-            name, 
+            name,
             summary,
             healthScore,
             steps,
             image: image ? image : "https://pixabay.com/es/photos/huevo-huevo-de-gallina-huevo-duro-1536990/"
         })
 
-        // if (temperaments) {
-        //     temperaments.forEach(async e => {
-        //         let find = await Temperament.findOne({
-        //             where: {
-        //                 name: e
-        //             },
-        //             attributes: { exclude: ["name"] }
-        //         });
-        //         // console.log(find)
-        //         if (find) {
-        //             await newDog.addTemperament(find.dataValues.id);
-        //         }
-        //     });
-        // }
-        res.send(newRecipe)
+        if (diet) {
+            diet.forEach(async e => {
+                let find = await Diet.findOne({
+                    where: {
+                        name: e
+                    },
+                    attributes: { exclude: ["name"] }
+                });
+                if (find) {
+                    await newRecipe.addDiet(find.dataValues.id);
+                }
+            });
+        }
+
+        res.status(200).send({
+            res: newRecipe,
+            message: "Receta creada con exito"
+        })
     } catch (error) {
         next(error)
     }

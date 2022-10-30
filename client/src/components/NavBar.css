@@ -1,0 +1,21 @@
+.container-navbar{
+    display:flex;
+    justify-content: space-around;
+    
+}
+
+
+.barra_navegacion {
+    display: flex;
+    width: 95%;
+    padding: 10px;
+    background-color: grey;
+    justify-content:space-between;
+}    
+
+li{
+    display: flex;
+    text-transform: uppercase;
+    margin: 10px;
+    gap: 10px;
+}

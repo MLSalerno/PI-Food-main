@@ -1,0 +1,11 @@
+.container-home{
+    /* width: 95%; */
+    /* display:inline-block; */
+    /* justify-content: center; */
+    border: solid 1px black;
+}
+
+.pagination{
+    margin-left: 0;
+    padding-left: 0;
+}

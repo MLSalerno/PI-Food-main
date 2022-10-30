@@ -1,0 +1,54 @@
+form {
+    background: white;
+    border: 1px solid #dedede;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 0 auto;
+    max-width: 500px;
+    padding: 30px 50px;
+  }
+
+  input {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .error {
+    font-size: 12px;
+    color: red;
+  }
+
+  .input_altura_peso {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: inline-block;
+    width: 150px;
+    }
+
+  button {
+    margin: 20px 0px;
+  }
+
+.div_altura_peso {
+    display: flex;
+    flex-direction:column;
+    /* padding: 10px 0px; */
+}  
+.danger {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-right: 100px;
+    width: 100%;
+    border: red solid 1px;
+    }
+
+.container_etiquetas{
+  display: flex;
+  flex-wrap: wrap;
+}
