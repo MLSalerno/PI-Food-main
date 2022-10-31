@@ -9,7 +9,7 @@ export default function Card(props) {
                 <div className="content-image">
                     <img src={props.image} alt={"asdasd"}/>
                 </div>
-                    
+                    {/* {console.log(props.diets)} */}
                     <h3>{props.name}</h3>
                     <h3>Dietas: {props.diets}</h3>
                     <Link to={`/recipes/${props.id}`}>

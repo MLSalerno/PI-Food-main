@@ -104,11 +104,11 @@ export default function Home() {
                             {"Menor peso"}
                         </option>
                     </select> */}
-                            {console.log(recipes)}
+                            {/* {console.log(currentRecipes)} */}
                     <Cards recipes={currentRecipes} />
-                    <div className="pagination">
-                        <Paginado recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} /> {/*el valor de la funcion de paginado aumenta segun el bucle for en el componente Paginado*/}
-                    </div>
+                    {/* <div className="pagination">
+                        <Paginado recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} /> el valor de la funcion de paginado aumenta segun el bucle for en el componente Paginado
+                    </div> */}
                 </div>
                 : <h1>{recipes.error}</h1>}
 

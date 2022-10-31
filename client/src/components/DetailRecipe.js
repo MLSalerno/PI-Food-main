@@ -4,9 +4,9 @@ import './card.css'
 import { useDispatch, useSelector } from "react-redux";
 import actionsRecipes from "../actions";
 
-export default function DetailDog() {
+export default function DetailRecipe() {
     let {id} = useParams();
-    if(id.length < 10) {
+    if(id.length < 15) {
         id = Number(id)
     }
     const dispatch = useDispatch();
@@ -27,10 +27,10 @@ export default function DetailDog() {
                     
                 <p>Nombre: {recipe.name}</p>
                 <p>Dietas: {recipe.diets}</p>
-                <p>Tipo de Plato: {dog.dishTypes} cm</p>
-                <p>Resumen: {dog.summary} kg</p>
-                <p>Nivel de comida saludable: {dog.healthScore}</p>
-                <p>Paso a paso: {dog.steps}</p>
+                <p>Tipo de Plato: {recipe.dishTypes} cm</p>
+                <p>Resumen: {recipe.summary} kg</p>
+                <p>Nivel de comida saludable: {recipe.healthScore}</p>
+                <p>Paso a paso: {recipe.steps}</p>
                 
                
  

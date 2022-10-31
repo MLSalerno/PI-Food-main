@@ -18,22 +18,24 @@ const rootReducer = (state = initialState, action) => {
                 searchRecipes: action.payload.map(e => {
                     return {
                         id: e.id,
-                        name: e.title,
+                        name: e.name,
                         image: e.image,
                         summary: e.summary,
                         healthScore: e.healthScore,
                         dishTypes: e.dishTypes,
+                        diets:e.diets.join(", "),
                         steps: e.steps
                     }
                 }),
                 recipes: action.payload.map(e => {
                     return {
                         id: e.id,
-                        name: e.title,
+                        name: e.name,
                         image: e.image,
                         summary: e.summary,
                         healthScore: e.healthScore,
                         dishTypes: e.dishTypes,
+                        diets:e.diets.join(", "),
                         steps: e.steps
                     }
                 }),
@@ -50,11 +52,12 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 recipeDetail: {
                     id: action.payload.id,
-                    name: action.payload.title,
+                    name: action.payload.name,
                     image: action.payload.image,
                     summary: action.payload.summary,
                     healthScore: action.payload.healthScore,
                     dishTypes: action.payload.dishTypes,
+                    diets:action.payload.diets.join(", "),
                     steps: action.payload.steps
                 }
             }

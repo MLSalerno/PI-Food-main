@@ -8,8 +8,8 @@ export default function NavBar(){
             <nav className="barra_navegacion">
                 <li>
                     <NavLink className="links" exact to="/" >Inicio</NavLink>
-                    <NavLink className="links" exact to="/dogs" >Busqueda</NavLink>
-                    <NavLink className="links" to="/createDog" >Añadir Perro</NavLink>
+                    <NavLink className="links" exact to="/recipes" >Busqueda</NavLink>
+                    <NavLink className="links" to="/createRecipe" >Añadir Receta</NavLink>
                 </li>
             </nav>
         </div>
