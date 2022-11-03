@@ -1,11 +1,11 @@
 import React from "react";
-import './EtiquetaTemp.css';
+import './EtiquetaDiet.css';
 
-export default function EtiquetaTemp({temperament, onClose}) {
+export default function EtiquetaDiet({diet, onClose}) {
     return (
         <div className="etiqueta">
             <button onClick={onClose}>x</button>
-            <h3>{temperament}</h3>        
+            <h3>{diet}</h3>        
         </div>
     )
 }

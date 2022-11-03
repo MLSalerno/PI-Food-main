@@ -12,6 +12,7 @@ export default function Card(props) {
                     {/* {console.log(props.diets)} */}
                     <h3>{props.name}</h3>
                     <h3>Dietas: {props.diets}</h3>
+                    <h3>Nivel comida saludable: {props.healthScore}</h3>
                     <Link to={`/recipes/${props.id}`}>
                         <button type="button">
                             Descripcion

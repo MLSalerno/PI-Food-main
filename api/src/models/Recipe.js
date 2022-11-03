@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
             allowNull: false
         },
 
+        dishTypes: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+        },
+
         image: {
             type: DataTypes.STRING(500),
           }

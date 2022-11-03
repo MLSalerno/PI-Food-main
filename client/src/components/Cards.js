@@ -8,7 +8,7 @@ export default function Cards(props) {
         <div className="container">
             {props.recipes ? props.recipes.map(e => (
                               
-                <Card key={e.id} name={e.name} image={e.image} diets={e.diets} id={e.id} />
+                <Card key={e.id} name={e.name} image={e.image} diets={e.diets} id={e.id} healthScore={e.healthScore} />
             )) : null}
         </div>
     )

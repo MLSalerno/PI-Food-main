@@ -12,7 +12,7 @@ function App() {
       <Route exact path="/" component={Landing} />
       <Route exact path="/recipes"><NavBar/><Home/></Route>
       <Route exact path="/recipes/:id"><NavBar/><DetailRecipe/></Route>
-      {/* <Route exact path="/createRecipe"><NavBar/><CreateRecipe/></Route> */}
+      <Route exact path="/createRecipe"><NavBar/><CreateRecipe/></Route>
     </BrowserRouter>
   );
 }

@@ -44,53 +44,53 @@ const actionsRecipes = {
         )
     },
 
-    // orderByName: (e) => {
+    orderByName: (e) => {
 
-    //     return (dispatch) => (
+        return (dispatch) => (
 
-    //         dispatch({
-    //             type: "ORDER_BY_NAME",
-    //             payload: e
-    //         })
+            dispatch({
+                type: "ORDER_BY_NAME",
+                payload: e
+            })
 
-    //     )
-    // },
+        )
+    },
 
-    // orderByWeight: (e) => {
+    orderByHScore: (e) => {
 
-    //     return (dispatch) => (
+        return (dispatch) => (
 
-    //         dispatch({
-    //             type: "ORDER_BY_WEIGHT",
-    //             payload: e
-    //         })
+            dispatch({
+                type: "ORDER_BY_HSCORE",
+                payload: e
+            })
 
-    //     )
-    // },
+        )
+    },
 
-    // filterByTemperament: (e) => {
+    filterByDiet: (e) => {
 
-    //     return (dispatch) => (
+        return (dispatch) => (
 
-    //         dispatch({
-    //             type: "GET_FILTER_TEMPERAMENTS",
-    //             payload: e
-    //         })
-    //     )
-    // },
+            dispatch({
+                type: "GET_FILTER_DIET",
+                payload: e
+            })
+        )
+    },
 
-    // filterByBreed: (e) => {
+    post: (e) => {
 
-    //     return (dispatch) => (
+        return async (dispatch) => {
+            let response = await axios.post('http://localhost:3001/api/recipes', e)
 
-    //         dispatch({
-    //             type: "GET_FILTER_BREED",
-    //             payload: e
-    //         })
-    //     )
-    // }
+            dispatch({
+                type: "POST",
+                payload: response.data
+            })
 
-
+        }
+    }
 }
 
 export default actionsRecipes;

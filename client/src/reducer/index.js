@@ -1,8 +1,9 @@
 let initialState = {
     recipeDetail: {},
-    searchRecipes: [],
+    allRecipes: [],
     recipes: [],
     diets: [],
+    statusPost:{}
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -11,34 +12,12 @@ const rootReducer = (state = initialState, action) => {
             if (action.payload.error) return {
                 ...state,
                 recipes: action.payload,
-                searchRecipes: action.payload
+                allRecipes: action.payload
             }
             return {
                 ...state,
-                searchRecipes: action.payload.map(e => {
-                    return {
-                        id: e.id,
-                        name: e.name,
-                        image: e.image,
-                        summary: e.summary,
-                        healthScore: e.healthScore,
-                        dishTypes: e.dishTypes,
-                        diets:e.diets.join(", "),
-                        steps: e.steps
-                    }
-                }),
-                recipes: action.payload.map(e => {
-                    return {
-                        id: e.id,
-                        name: e.name,
-                        image: e.image,
-                        summary: e.summary,
-                        healthScore: e.healthScore,
-                        dishTypes: e.dishTypes,
-                        diets:e.diets.join(", "),
-                        steps: e.steps
-                    }
-                }),
+                allRecipes: action.payload,
+                recipes: action.payload
             }
 
         case 'GET_DIETS':
@@ -57,89 +36,88 @@ const rootReducer = (state = initialState, action) => {
                     summary: action.payload.summary,
                     healthScore: action.payload.healthScore,
                     dishTypes: action.payload.dishTypes,
-                    diets:action.payload.diets.join(", "),
+                    diets: action.payload.diets,
                     steps: action.payload.steps
                 }
             }
 
-        // case 'ORDER_BY_NAME':
+            case 'ORDER_BY_NAME':
 
-        //     let sortByName = action.payload === 'A-Z' ?
-        //         state.searchDogs.sort(function (a, b) {
-        //             if (a.name > b.name) {
-        //                 return 1
-        //             }
-        //             if (b.name > a.name) {
-        //                 return -1
-        //             }
-        //             return 0
-        //         }) :
-        //         state.searchDogs.sort(function (a, b) {
-        //             if (a.name > b.name) {
-        //                 return -1
-        //             }
-        //             if (b.name > a.name) {
-        //                 return 1
-        //             }
-        //             return 0
-        //         })
-        //     return {
-        //         ...state,
-        //         dogs: sortByName
-        //     }
-
-        // case "ORDER_BY_WEIGHT":
-        //     const sortedWeight =
-        //         action.payload === "Menor peso"
-        //             ? state.searchDogs.sort((a, b) => {
-
-        //                 if (parseInt(a.weight[0]) > parseInt(b.weight[0])) {
-        //                     return 1;
-        //                 }
-        //                 if (parseInt(b.weight[0]) > parseInt(a.weight[0])) {
-        //                     return -1;
-        //                 }
-        //                 return 0;
-        //             })
-        //             : state.searchDogs.sort((a, b) => {
-        //                 if (parseInt(a.weight[0]) > parseInt(b.weight[0])) {
-        //                     return -1;
-        //                 }
-        //                 if (parseInt(b.weight[0]) > parseInt(a.weight[0])) {
-        //                     return 1;
-        //                 }
-        //                 return 0;
-        //             });
-        //     return {
-        //         ...state,
-        //         dogs: sortedWeight,
-        //     };
-
-        // case "GET_FILTER_DIETS":
-        //     const allDogs = state.searchDogs;
-
-        //     let filteredDogs = [];
-        //     if (action.payload === "Todos") {
-        //         filteredDogs = allDogs;
-        //     } else {
-        //         allDogs.forEach(e => {
-        //             // console.log(e.temperament)
-        //             if (e.temperament.includes(action.payload)) {
-        //                 filteredDogs.push(e);
-        //             }
-        //         })
-        //     }
-        //     return {
-        //         ...state,
-        //         dogs: filteredDogs,
-        //     };
-
-        // case "GET_FILTER_BREED":
-        //     return {
-        //         ...state,
-        //         dogs: state.searchDogs.filter(e => e.name === action.payload),
-        //     };
-
+                let sortByName = action.payload === 'A-Z' ?
+                    state.recipes.sort(function (a, b) {
+                        if (a.name > b.name) {
+                            return 1
+                        }
+                        if (b.name > a.name) {
+                            return -1
+                        }
+                        return 0
+                    }) :
+                    state.recipes.sort(function (a, b) {
+                        if (a.name > b.name) {
+                            return -1
+                        }
+                        if (b.name > a.name) {
+                            return 1
+                        }
+                        return 0
+                    })
+                return {
+                    ...state,
+                    recipes: sortByName
+                }
+    
+            case "ORDER_BY_HSCORE":
+                const sortedHscore =
+                    action.payload === "Menos saludable"
+                        ? state.recipes.sort((a, b) => {
+    
+                            if (a.healthScore > b.healthScore) {
+                                return 1;
+                            }
+                            if (b.healthScore > a.healthScore) {
+                                return -1;
+                            }
+                            return 0;
+                        })
+                        : state.recipes.sort((a, b) => {
+                            if (a.healthScore > b.healthScore) {
+                                return -1;
+                            }
+                            if (b.healthScore > a.healthScore) {
+                                return 1;
+                            }
+                            return 0;
+                        });
+                return {
+                    ...state,
+                    recipes: sortedHscore,
+                };
+    
+            case "GET_FILTER_DIET":
+                // const allRecipes = state.allRecipes;
+    
+                let filteredRecipes = [];
+                if (action.payload === "Todos") {
+                    filteredRecipes = state.allRecipes;
+                } else {
+                    state.allRecipes.forEach(e => {
+                        // console.log(e.temperament)
+                        if (e.diets.includes(action.payload)) {
+                            filteredRecipes.push(e);
+                        }
+                    })
+                }
+                return {
+                    ...state,
+                    recipes: filteredRecipes,
+                };
+            
+            case "POST" : 
+            return {
+                ...state,
+                statusPost: action.payload
+            }
         default: return state
     }
 }

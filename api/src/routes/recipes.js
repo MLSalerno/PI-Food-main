@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const { Recipe, Diet } = require('../db');
 const axios = require('axios');
+const { Op } = require("sequelize");
 const { API_KEY } = process.env;
 
 // info que necesito de la api, esta dentro de results que es un array de objetos
@@ -38,8 +39,13 @@ const getDB = async (name) => {
     let db;
     if (name) {
         db = await Recipe.findAll({
-            where: { name: name },
+            // where: { name: name },
+            // include: Diet
+            where: { name:{
+                [Op.like]:`%${name}%`
+            }},
             include: Diet
+            
         })
     }
     else {
@@ -76,22 +82,22 @@ const getAll = async (name) => {
             image: e.image,
             summary: e.summary,
             healthScore: e.healthScore,
-            dishTypes: e.dishTypes,
+            dishTypes: e.dishTypes.length >= 1 ? e.dishTypes : "No existen platos relacionados",
             steps: stepsBySteps,
-            diets:allDiets
+            diets:allDiets.length >= 1 ? allDiets.join(", ") : "No hay dietas relacionadas"
         }
     })
     
     let filteredCallDb = callDb.map(e => {
-
-        let diets = e.dataValues.diets.map(e => e.dataValues.name);
+        let allDiets = e.dataValues.diets.map(e => e.dataValues.name);
         return {
             id: e.dataValues.id,
             name: e.dataValues.name,
-            summary: e.summary,
-            healthScore: e.healthScore,
+            summary: e.dataValues.summary,
+            healthScore: e.dataValues.healthScore,
+            dishTypes: e.dataValues.dishTypes !== null ? e.dataValues.dishTypes : "No existen platos relacionados",
             steps: e.dataValues.steps,
-            diet: diets,
+            diets: allDiets.length >= 1 ? allDiets.join(", ") : "No hay dietas relacionadas",
             image: e.dataValues.image
         }
     })
@@ -125,9 +131,9 @@ const getByID = async (id) => {
             image: findRecipe.data.image,
             summary: findRecipe.data.summary,
             healthScore: findRecipe.data.healthScore,
-            dishTypes: findRecipe.data.dishTypes,
+            dishTypes: findRecipe.data.dishTypes !== null ? findRecipe.data.dishTypes : "No existen platos relacionados",
             steps: stepsBySteps,
-            diets:allDiets
+            diets:allDiets.length >= 1 ? allDiets.join(", ") : "No hay dietas relacionadas"
         }
     }
     else {
@@ -135,14 +141,16 @@ const getByID = async (id) => {
             where: { id: id },
             include: Diet
         });
-        let diets = findRecipe.dataValues.diets.map(e => e.dataValues.name);
+        let allDiets = findRecipe.dataValues.diets.map(e => e.dataValues.name);
+        console.log(findRecipe.dataValues.image)
         return {
             id: findRecipe.dataValues.id,
             name: findRecipe.dataValues.name,
             summary: findRecipe.summary,
             healthScore: findRecipe.healthScore,
             steps: findRecipe.dataValues.steps,
-            diet: diets,
+            dishTypes:findRecipe.dataValues.dishTypes !== null ? findRecipe.dataValues.dishTypes : "No existen platos relacionados",
+            diets: allDiets.length >= 1 ? allDiets.join(", ") : "No hay dietas relacionadas",
             image: findRecipe.dataValues.image
         }
     }
@@ -152,7 +160,7 @@ const getByID = async (id) => {
 
 router.get('/', async (req, res, next) => {
     let name = req.query.name;
-
+    name = name.toUpperCase()
     try {
         let allRecipes = await getAll(name)
         if (allRecipes.length !== 0) {
@@ -188,18 +196,18 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
     try {
-        let { name, summary, healthScore, steps, image, diet } = req.body;
-
+        let { name, summary, healthScore, steps, image, diets } = req.body;
+        name=name.toUpperCase();
         const newRecipe = await Recipe.create({
             name,
             summary,
             healthScore,
             steps,
-            image: image ? image : "https://pixabay.com/es/photos/huevo-huevo-de-gallina-huevo-duro-1536990/"
+            image: image ? image : "https://w0.peakpx.com/wallpaper/160/626/HD-wallpaper-nono-sad-egg-cute-chicken.jpg"
         })
 
-        if (diet) {
-            diet.forEach(async e => {
+        if (diets) {
+            diets.forEach(async e => {
                 let find = await Diet.findOne({
                     where: {
                         name: e
