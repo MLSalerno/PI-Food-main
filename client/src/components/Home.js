@@ -63,7 +63,6 @@ export default function Home() {
         <div className="container-home">
             <input name="name" onChange={(e) => handleChange(e)} />
             <button onClick={() => onClick()}>BUSCAR</button>
-            {console.log(recipes)}
             {!recipes.error && recipes.length >= 1 ?
                 <div>
                     <select onChange={e => onChangeFilterByDiet(e)}>

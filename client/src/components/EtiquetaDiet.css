@@ -1,18 +1,29 @@
-.etiqueta{
-    width:80px;
-    height: 40px;
+.etiqueta {
+    position: relative;
+    width: 90px;
+    height: 50px;
     border: 1px solid black;
     background-color: lightsteelblue;
     margin: 10px;
     font-size: 10px;
 }
 
-    button {
-        width: 3px;
-        height: 14px;
+.etiqueta button {
+    width: 10px;
+    height: 10px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 6px;
+    text-align: center;
+    font-weight: bold;
+}
 
-        }
-
-    h3{
-        text-align: center;
-    }
+.etiqueta_text {
+    justify-content: center;
+    align-content: center;
+    margin: 10px 4px;
+    color: pink;
+}

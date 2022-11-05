@@ -93,11 +93,8 @@ export default function CreateRecipe() {
     }
 
     function onChange(e) {
-        // console.log(e.target.value)
         let find = input.diets.find(elem => elem === e.target.value);
-        // console.log(find)
         if (!find) {
-            // console.log(e.target.key)
             setInput(prevInput => {
                 return {
                     ...prevInput,
@@ -122,20 +119,18 @@ export default function CreateRecipe() {
         <div>
             <form onSubmit={onSubmit}>
                 <label>Nombre</label>
-                <input name="name" className={(error.name !== "") ? 'danger' : null} onChange={e => validate(e)}></input>
+                <input name="name" placeholder="Nombre de la receta" className={(error.name !== "") ? 'danger' : null} onChange={e => validate(e)}></input>
                 {error.name ? <label className="error">{error.name}</label> : null}
                 <label>Resumen del plato</label>
                 <div className="div_resumen">
-                    <input name="summary" placeholder="Escribi un resumen del plato" className={(error.summary !== "") ? 'danger' : "input_resumen"} onChange={e => validate(e)}></input>
+                    <input name="summary" placeholder="Escribi una descripcion de la receta" className={(error.summary !== "") ? 'danger' : "input_resumen"} onChange={e => validate(e)}></input>
                     {error.summary ? <label className="error">{error.summary}</label> : null}
                 </div>
                 <label>Nivel de comida saludable</label>
                 <div className="div_health_score">
-                    <input name="healthScore" placeholder="Ingrese nivel de saludable" className={(error.healthScore !== "") ? 'danger' : "input_resumen"} onChange={validate}></input>
+                    <input name="healthScore" placeholder="Ingrese nivel de saludable" className={(error.healthScore !== "") ? 'danger' : "input_hscore"} onChange={validate}></input>
                     {error.healthScore ? <label className="error">{error.healthScore}</label> : null}
                                    </div>
-                {/* <label>Años de vida</label>
-                <input name="life_span" onChange={validate}></input> */}
                 <label>Dietas</label>
                 <select name="diets" onChange={e => onChange(e)}>
                     {diets.map(e => (
