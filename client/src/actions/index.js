@@ -81,16 +81,13 @@ const actionsRecipes = {
 
     post: (e) => {
 
-        return async (dispatch) => {
+        return async () => {
             let response = await axios.post('http://localhost:3001/api/recipes', e)
-
-            dispatch({
-                type: "POST",
-                payload: response.data
-            })
-
+            return response.data
         }
-    }
+    },
+
+
 }
 
 export default actionsRecipes;

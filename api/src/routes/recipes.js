@@ -220,10 +220,7 @@ router.post('/', async (req, res, next) => {
             });
         }
 
-        res.status(200).send({
-            res: newRecipe,
-            message: "Receta creada con exito"
-        })
+        res.status(200).send(newRecipe)
     } catch (error) {
         next(error)
     }

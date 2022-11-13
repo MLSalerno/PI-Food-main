@@ -5,21 +5,24 @@ import './card.css'
 export default function Card(props) {
     return (
         <div className="card">
-            
-                <div className="content-image">
-                    <img src={props.image} alt={"asdasd"}/>
+
+            <div className="card_image">
+                <img src={props.image} alt={"No hay iamgen relacionada"} />
+            </div>
+            {/* {console.log(props.diets)} */}
+            <div className="info">
+                <h2>{props.name}</h2>
+                <div className="info_diets_healthscore">
+                    <h4>{props.diets}</h4>
+                    {/* <span>Nivel de saludable:</span> */}
+                    <h3>Nivel saludable: {props.healthScore}</h3>
                 </div>
-                    {/* {console.log(props.diets)} */}
-                    <h3>{props.name}</h3>
-                    <h3>Dietas: {props.diets}</h3>
-                    <h3>Nivel comida saludable: {props.healthScore}</h3>
-                    <Link to={`/recipes/${props.id}`}>
-                        <button type="button">
-                            Descripcion
-                        </button>
-                    </Link>
-               
- 
+                <Link to={`/recipes/${props.id}`} className="info_button_detail">
+                    Descripcion
+                </Link>
+            </div>
+
+
         </div>
     )
 }

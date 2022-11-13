@@ -1,0 +1,23 @@
+.detail-container{
+    width: 70%;
+    height:50rem;
+    padding: 20px;
+    margin: 40px;
+    background-color:burlywood;
+    display: flex;
+    border: 1px solid black;
+}
+
+.button {
+    top: 0;
+    left: 0;
+    position: relative;
+    display: inline-block;
+}
+
+.image {
+    width: 50rem;
+    height: 80rem;
+    position:relative;
+    }
+

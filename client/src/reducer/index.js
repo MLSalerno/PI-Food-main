@@ -2,8 +2,7 @@ let initialState = {
     recipeDetail: {},
     allRecipes: [],
     recipes: [],
-    diets: [],
-    statusPost:{}
+    diets: []
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -41,82 +40,75 @@ const rootReducer = (state = initialState, action) => {
                 }
             }
 
-            case 'ORDER_BY_NAME':
+        case 'ORDER_BY_NAME':
 
-                let sortByName = action.payload === 'A-Z' ?
-                    state.recipes.sort(function (a, b) {
-                        if (a.name > b.name) {
-                            return 1
-                        }
-                        if (b.name > a.name) {
-                            return -1
-                        }
-                        return 0
-                    }) :
-                    state.recipes.sort(function (a, b) {
-                        if (a.name > b.name) {
-                            return -1
-                        }
-                        if (b.name > a.name) {
-                            return 1
-                        }
-                        return 0
-                    })
-                return {
-                    ...state,
-                    recipes: sortByName
-                }
-    
-            case "ORDER_BY_HSCORE":
-                const sortedHscore =
-                    action.payload === "Menos saludable"
-                        ? state.recipes.sort((a, b) => {
-    
-                            if (a.healthScore > b.healthScore) {
-                                return 1;
-                            }
-                            if (b.healthScore > a.healthScore) {
-                                return -1;
-                            }
-                            return 0;
-                        })
-                        : state.recipes.sort((a, b) => {
-                            if (a.healthScore > b.healthScore) {
-                                return -1;
-                            }
-                            if (b.healthScore > a.healthScore) {
-                                return 1;
-                            }
-                            return 0;
-                        });
-                return {
-                    ...state,
-                    recipes: sortedHscore,
-                };
-    
-            case "GET_FILTER_DIET":
-                // const allRecipes = state.allRecipes;
-    
-                let filteredRecipes = [];
-                if (action.payload === "Todos") {
-                    filteredRecipes = state.allRecipes;
-                } else {
-                    state.allRecipes.forEach(e => {
-                        // console.log(e.temperament)
-                        if (e.diets.includes(action.payload)) {
-                            filteredRecipes.push(e);
-                        }
-                    })
-                }
-                return {
-                    ...state,
-                    recipes: filteredRecipes,
-                };
-            
-            case "POST" : 
+            let sortByName = action.payload === 'A-Z' ?
+                state.recipes.sort(function (a, b) {
+                    if (a.name > b.name) {
+                        return 1
+                    }
+                    if (b.name > a.name) {
+                        return -1
+                    }
+                    return 0
+                }) :
+                state.recipes.sort(function (a, b) {
+                    if (a.name > b.name) {
+                        return -1
+                    }
+                    if (b.name > a.name) {
+                        return 1
+                    }
+                    return 0
+                })
             return {
                 ...state,
-                statusPost: action.payload
+                recipes: sortByName
+            }
+
+        case "ORDER_BY_HSCORE":
+            const sortedHscore =
+                action.payload === "Menos saludable"
+                    ? state.recipes.sort((a, b) => {
+
+                        if (a.healthScore > b.healthScore) {
+                            return 1;
+                        }
+                        if (b.healthScore > a.healthScore) {
+                            return -1;
+                        }
+                        return 0;
+                    })
+                    : state.recipes.sort((a, b) => {
+                        if (a.healthScore > b.healthScore) {
+                            return -1;
+                        }
+                        if (b.healthScore > a.healthScore) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+            return {
+                ...state,
+                recipes: sortedHscore,
+            };
+
+        case "GET_FILTER_DIET":
+            
+            let filteredRecipes = [];
+            if (action.payload === "Todos") {
+                filteredRecipes = state.allRecipes;
+            } else {
+                state.allRecipes.forEach(e => {
+                    // console.log(e.temperament)
+                    if (e.diets.includes(action.payload)) {
+                        filteredRecipes.push(e);
+                    }
+                })
+            }
+            return {
+                ...state,
+                recipes: filteredRecipes,
             }
         default: return state
     }

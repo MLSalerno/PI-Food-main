@@ -1,11 +1,11 @@
 import React from "react";
-import './EtiquetaDiet.css';
+import './Etiqueta.css';
 
-export default function EtiquetaDiet({ diet, onClose }) {
+export default function Etiqueta({ name, onClose }) {
     return (
         <div className="etiqueta">
             <button onClick={onClose}>X</button>
-            <h3 className="etiqueta_text">{diet}</h3>
+            <h3 className="etiqueta_text">{name}</h3>
         </div>
     )
 }

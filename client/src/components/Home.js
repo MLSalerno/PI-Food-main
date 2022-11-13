@@ -27,12 +27,12 @@ export default function Home() {
         setCurrentPage(pageNumber)
     };
 
-    
+
     useEffect(() => {
         dispatch(actionsRecipes.getDiets());
         dispatch(actionsRecipes.getRecipes(data.name))
     }, [])
-    
+
 
     function handleChange(e) {
         setData({ ...data, [e.target.name]: e.target.value })
@@ -41,7 +41,7 @@ export default function Home() {
     function onClick() {
         dispatch(actionsRecipes.getRecipes(data.name))
     }
-    
+
     function onChangeOrderAZ(e) {
         e.preventDefault();
         dispatch(actionsRecipes.orderByName(e.target.value));
@@ -60,41 +60,45 @@ export default function Home() {
     }
 
     return (
-        <div className="container-home">
-            <input name="name" onChange={(e) => handleChange(e)} />
-            <button onClick={() => onClick()}>BUSCAR</button>
+        <div className="home">
+            <div className="searchbar">
+                <input name="name" onChange={(e) => handleChange(e)} />
+                <button onClick={() => onClick()}>BUSCAR</button>
+            </div>
             {!recipes.error && recipes.length >= 1 ?
                 <div>
-                    <select onChange={e => onChangeFilterByDiet(e)}>
-                        <option value="Todos">Todos</option>
-                        {diets.map(e => (
-                            <option key={e.id} value={e.name} >
-                                {e.name}
+                    <div className="home_filters">
+                        <select onChange={e => onChangeFilterByDiet(e)}>
+                            <option value="Todos">Todos</option>
+                            {diets.map(e => (
+                                <option key={e.id} value={e.name} >
+                                    {e.name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <select onChange={e => onChangeOrderAZ(e)}>
+                            <option key={1} value={"A-Z"} >
+                                {"A-Z"}
                             </option>
-                        ))}
-                    </select>
+                            <option key={2} value={"Z-A"} >
+                                {"Z-A"}
+                            </option>
+                        </select>
 
-                    <select onChange={e => onChangeOrderAZ(e)}>
-                        <option key={1} value={"A-Z"} >
-                            {"A-Z"}
-                        </option>
-                        <option key={2} value={"Z-A"} >
-                            {"Z-A"}
-                        </option>
-                    </select>
-
-                    <select onChange={e => onChangeOrderByHScore(e)}>
-                        <option key={1} value={"Mas saludable"} >
-                            {"Mas saludable"}
-                        </option>
-                        <option key={2} value={"Menos saludable"} >
-                            {"Menos saludable"}
-                        </option>
-                    </select>
-                    <Cards recipes={currentRecipes} />
+                        <select onChange={e => onChangeOrderByHScore(e)}>
+                            <option key={1} value={"Mas saludable"} >
+                                {"Mas saludable"}
+                            </option>
+                            <option key={2} value={"Menos saludable"} >
+                                {"Menos saludable"}
+                            </option>
+                        </select>
+                    </div>
                     <div className="pagination">
                         <Paginado recipesPerPage={recipesPerPage} recipes={recipes.length} paginado={paginado} /> {/*el valor de la funcion de paginado aumenta segun el bucle for en el componente Paginado*/}
                     </div>
+                    <Cards recipes={currentRecipes} />
                 </div>
                 : <h1>{recipes.error}</h1>}
 

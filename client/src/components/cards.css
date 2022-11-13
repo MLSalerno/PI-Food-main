@@ -1,7 +1,10 @@
-.container{
-    width: 95%;
+.cards_container{
+    width: 85%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    border: solid 1px black;
+    background-color: white;
+    margin: auto;
+    margin-top: 10px;
+    /* padding-top: 5px; */
 }

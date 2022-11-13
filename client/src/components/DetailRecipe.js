@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import './card.css'
+import './detailrecipe.css'
 import { useDispatch, useSelector } from "react-redux";
 import actionsRecipes from "../actions";
 import { Link } from "react-router-dom";
@@ -20,26 +20,25 @@ export default function DetailRecipe() {
 
 
     return (
-        <div className="card">
-
-            <Link to={"/recipes"}>
-                <button type="button">
-                    Atras
-                </button>
-            </Link>
-            <div className="content-image">
+        <div className="detail-container">
+            <div className="button">
+                <Link to={"/recipes"}>
+                    <button type="button">
+                        Atras
+                    </button>
+                </Link>
+            </div>
+            <div className="image">
                 <img src={recipe.image} alt="cargandooo" />
             </div>
-
-            <p>Nombre: {recipe.name}</p>
-            <p>Dietas: {recipe.diets}</p>
-            <p>Tipo de Plato: {recipe.dishTypes}</p>
-            <p>Resumen: {recipe.summary}</p>
-            <p>Nivel de comida saludable: {recipe.healthScore}</p>
-            <p>Paso a paso: {recipe.steps}</p>
-
-
-
+            <div className="info">
+                <p>Nombre: {recipe.name}</p>
+                <p>Dietas: {recipe.diets}</p>
+                <p>Tipo de Plato: {recipe.dishTypes}</p>
+                <p>Resumen: {recipe.summary}</p>
+                <p>Nivel de comida saludable: {recipe.healthScore}</p>
+                <p>Paso a paso: {recipe.steps}</p>
+            </div>
         </div>
     )
 }
