@@ -1,12 +1,23 @@
+.form_container{
+  display: flex;
+  justify-content: center;
+  padding: 25px;
+}
+
+.div_resumen {
+  display: flex;
+  flex-direction:column
+  /* padding: 10px 0px; */
+}  
+
 form {
     background: white;
     border: 1px solid #dedede;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    margin: 0 auto;
-    max-width: 500px;
-    padding: 30px 50px;
+    justify-content: center;
+    width: 550px;
+    padding: 10px 20px;
   }
 
   input {
@@ -39,21 +50,19 @@ form {
     margin: 20px 0px;
   }
 
-.div_resumen {
-    display: flex;
-    flex-direction:column;
-    /* padding: 10px 0px; */
-}  
 .danger {
-    border: 1px solid #d9d9d9;
+    /* border: 1px solid #d9d9d9;
     border-radius: 4px;
     box-sizing: border-box;
     margin-right: 100px;
-    width: 100%;
+    width: 100%; */
+    width: inherit;
+    height: inherit;
     border: red solid 1px;
     }
 
 .container_etiquetas{
   display: flex;
   flex-wrap: wrap;
+  padding: 3px;
 }

@@ -146,44 +146,51 @@ export default function CreateRecipe() {
     // }
 
     return (
-        <div>
+        <div className="form_container">
             {statusPost !== "" ? <h1>{statusPost}</h1> :
                 <form onSubmit={onSubmit}>
-                    {console.log(data.steps)}
-                    <label>Nombre</label>
-                    <input name="name" placeholder="Nombre de la receta" className={(error.name !== "") ? 'danger' : null} onChange={e => validate(e)}></input>
-                    {error.name ? <label className="error">{error.name}</label> : null}
-                    <label>Resumen del plato</label>
                     <div className="div_resumen">
+                        <label>Nombre</label>
+                        <input name="name" placeholder="Nombre de la receta" className={(error.name !== "") ? 'danger' : null} onChange={e => validate(e)}></input>
+                        {error.name ? <label className="error">{error.name}</label> : null}
+                    </div>
+                    <div className="div_resumen">
+                        <label>Resumen del plato</label>
                         <input name="summary" placeholder="Escribi una descripcion de la receta" className={(error.summary !== "") ? 'danger' : "input_resumen"} onChange={e => validate(e)}></input>
                         {error.summary ? <label className="error">{error.summary}</label> : null}
                     </div>
-                    <label>Nivel de comida saludable</label>
-                    <div className="div_health_score">
+                    <div className="div_resumen">
+                        <label>Nivel de comida saludable</label>
                         <input name="healthScore" placeholder="Ingrese nivel de saludable" className={(error.healthScore !== "") ? 'danger' : "input_hscore"} onChange={validate}></input>
                         {error.healthScore ? <label className="error">{error.healthScore}</label> : null}
                     </div>
-                    <label>Dietas</label>
-                    <select name="diets" onChange={e => onChangeDiets(e)}>
-                        {diets.map(e => (
-                            <option key={e.id} value={e.name} >
-                                {e.name}
-                            </option>
-                        ))}
-                    </select>
+                    <div className="div_resumen">
+                        <label>Dietas</label>
+                        <select name="diets" onChange={e => onChangeDiets(e)}>
+                            {diets.map(e => (
+                                <option key={e.id} value={e.name} >
+                                    {e.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <label>Dietas elegidas</label>
                     <div className="container_etiquetas">
                         {data.diets ? data.diets.map(elem => (
                             <Etiqueta key={elem} name={elem} onClose={() => onClose(elem)} />
                         )) : null}
                     </div>
-                    <label>Paso a paso</label>
-                    <input name="steps" onChange={e => onChangeSteps(e)}/>
-                    <input type="button" value="Agregar paso a paso" onClick={e => addStep(e)}/>
-                    {data.steps.map((el, i) => (
-                        <input type="text" defaultValue={el} readOnly={true} key={i}/>
-                    )
-                    )}
+                    <div className="div_resumen">
+                        <label>Paso a paso</label>
+                        <input name="steps" onChange={e => onChangeSteps(e)} />
+                        <input type="button" value="Agregar paso a paso" onClick={e => addStep(e)} />
+                    </div>
+                    <div>
+                        {data.steps.map((el, i) => (
+                            <input type="text" defaultValue={el} readOnly={true} key={i} />
+                        )
+                        )}
+                    </div>
                     {(data.name === "") || (data.summary === "") || (data.healthScore === "") || (error.summary !== "") || (error.healthScore !== "") || (error.name !== "") ? <button type="submit" disabled={true} >CREAR RECETA</button> : <button type="submit" disabled={false} >CREAR RECETA</button>}
                 </form>
             }

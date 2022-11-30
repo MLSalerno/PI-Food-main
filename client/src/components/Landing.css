@@ -1,4 +1,7 @@
 .fondo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-image: url('../assets/fondo_landing.jpg');
     /* background-color: orange; */
     background-repeat: no-repeat;
@@ -9,9 +12,12 @@
     }
 
 .button {
-    position: absolute;
-    top: 50%;
-    left: 50%;  
-    width: 200px;
-    height: 100px;
-}
+    display: flex;
+    background-color: rgb(255, 188, 34);
+    text-align: center;
+    border: 1px solid white;
+    padding: 6px;
+    border-radius: 15%;
+    font-size: 30px;
+    text-decoration: none;
+    }
